@@ -4,14 +4,13 @@ on: [push]
 jobs:
   birthdays-fetcher-lint:
     name: Code quality check on brithdays-fetcher service
-    build:
-      runs-on: ubuntu-latest
-      defaults:
-        run:
-          working-directory: services/birthdays-fetcher
-      steps:
-      - uses: actions/checkout@v3
-      - name: Install modules
-        run: yarn
-      - name: Run ESLint
-        run: npm run lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/birthdays-fetcher
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install modules
+      run: yarn
+    - name: Run ESLint
+      run: npm run lint
