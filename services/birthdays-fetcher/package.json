@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "tsc -b tsconfig.json"
+    "compile": "tsc -b tsconfig.json",
+    "lint": "yarn run eslint 'src/**/*ts' --max-warnings 0 -f compact"
   },
   "author": "",
   "license": "ISC",
