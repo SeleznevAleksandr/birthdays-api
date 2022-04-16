@@ -15,5 +15,7 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
+    semi: [2, 'always'],
+    'space-before-function-paren': ['error', 'never']
   }
-}
+};
