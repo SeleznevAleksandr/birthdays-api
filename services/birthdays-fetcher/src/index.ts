@@ -1,12 +1,17 @@
 import { FetchBirthdayDaysService } from './services/notionFetcherService';
 import { DynamoDBService } from './services/dynamoDBservice';
 
-async function getResult(): Promise<any> {
+export const handler = async(event: any, context: any): Promise<any> => {
   const fetchBirthdayDaysService = new FetchBirthdayDaysService();
   const userData = await fetchBirthdayDaysService.fetchData();
 
   const dynamoDBService = new DynamoDBService(userData);
-  dynamoDBService.updateAllData();
-}
+  await dynamoDBService.updateAllData();
 
-getResult();
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: 'processed successfully'
+    })
+  };
+};

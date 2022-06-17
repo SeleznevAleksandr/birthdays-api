@@ -1,45 +1,47 @@
-import * as aws from 'aws-sdk';
+import { DynamoDBClient, PutItemCommand, PutItemCommandInput } from '@aws-sdk/client-dynamodb';
+import { NotionDataType } from './notionFetcherService';
 
 export class DynamoDBService {
-  dynamoDBClient: aws.DynamoDB;
-  params: Record<string, any>[];
+  dynamoDBClient: DynamoDBClient;
+  params: NotionDataType[];
 
-  constructor(params: Record<string, any>[]) {
-    this.dynamoDBClient = new aws.DynamoDB({ region: 'eu-central-1' });
+  constructor(params: NotionDataType[]) {
+    this.dynamoDBClient = new DynamoDBClient({ region: 'eu-central-1' });
     this.params = params;
   }
 
-  updateAllData() {
-    this.params.forEach((employee) => {
-      const inputParams = this.prepareParams(employee);
+  async updateAllData(): Promise<void> {
+    let inputParams: PutItemCommandInput;
 
-      this.dynamoDBClient.updateItem(inputParams, (err, data) => {
-        if (err) {
-          console.log(err, err.stack);
-        }
-      });
-    });
+    console.log('Start processing data...');
+
+    for (const employee of this.params) {
+      inputParams = this.prepareParamsNew(employee);
+      try {
+        await this.dynamoDBClient.send(new PutItemCommand(inputParams));
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    console.log('Finished!');
   }
 
-  private prepareParams(employee: Record<string, any>) {
+  private prepareParamsNew(employee: NotionDataType): PutItemCommandInput {
     return {
-      TableName: 'Birthdays',
-      Key: {
-        userName: { S: employee.userName }
-      },
-      ExpressionAttributeNames: {
-        '#AT': 'birthday',
-        '#Y': 'photo'
-      },
-      ExpressionAttributeValues: {
-        ':t': {
+      Item: {
+        userName: {
+          S: employee.userName
+        },
+        birthday: {
           S: employee.birthday
         },
-        ':y': {
+        photo: {
           S: employee.photo
         }
       },
-      UpdateExpression: 'SET #Y = :y, #AT = :t'
+      ReturnConsumedCapacity: 'TOTAL',
+      TableName: 'Birthdays'
     };
   }
 }
