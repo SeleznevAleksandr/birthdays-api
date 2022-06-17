@@ -13,21 +13,17 @@ export class DynamoDBService {
   async updateAllData(): Promise<void> {
     let inputParams: PutItemCommandInput;
 
-    console.log('Start processing data...');
-
     for (const employee of this.params) {
-      inputParams = this.prepareParamsNew(employee);
+      inputParams = this.prepareParams(employee);
       try {
         await this.dynamoDBClient.send(new PutItemCommand(inputParams));
       } catch (err) {
         console.log(err);
       }
     }
-
-    console.log('Finished!');
   }
 
-  private prepareParamsNew(employee: NotionDataType): PutItemCommandInput {
+  private prepareParams(employee: NotionDataType): PutItemCommandInput {
     return {
       Item: {
         userName: {
