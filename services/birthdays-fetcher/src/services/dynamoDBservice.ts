@@ -1,26 +1,33 @@
 import { DynamoDBClient, PutItemCommand, PutItemCommandInput } from '@aws-sdk/client-dynamodb';
+import pino from 'pino';
 import { NotionDataType } from './notionFetcherService';
 
 export class DynamoDBService {
-  dynamoDBClient: DynamoDBClient;
-  params: NotionDataType[];
+  #dynamoDBClient: DynamoDBClient;
+  #params: NotionDataType[];
+  #logger: pino.Logger;
 
-  constructor(params: NotionDataType[]) {
-    this.dynamoDBClient = new DynamoDBClient({ region: 'eu-central-1' });
-    this.params = params;
+  constructor(params: NotionDataType[], logger: pino.Logger) {
+    this.#dynamoDBClient = new DynamoDBClient({ region: 'eu-central-1' });
+    this.#params = params;
+    this.#logger = logger;
   }
 
   async updateAllData(): Promise<void> {
     let inputParams: PutItemCommandInput;
 
-    for (const employee of this.params) {
+    this.#logger.info('Start processing data.');
+
+    for (const employee of this.#params) {
       inputParams = this.prepareParams(employee);
       try {
-        await this.dynamoDBClient.send(new PutItemCommand(inputParams));
-      } catch (err) {
-        console.log(err);
+        await this.#dynamoDBClient.send(new PutItemCommand(inputParams));
+      } catch (err: any) {
+        this.#logger.error(err);
       }
     }
+
+    this.#logger.info('Processed successfully');
   }
 
   private prepareParams(employee: NotionDataType): PutItemCommandInput {
