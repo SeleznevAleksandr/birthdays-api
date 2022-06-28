@@ -4,3 +4,9 @@
 # Ignore JS files
 **/dist
 **/node_modules
+
+# Igonre .terraform provider files
+**/.terraform
+
+# Ignore esbuild artifacts
+**/index.zip
