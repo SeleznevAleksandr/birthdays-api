@@ -91,7 +91,7 @@ data "aws_iam_policy_document" "additional-policy" {
       "logs:PutLogEvents"
     ]
 
-    resources = ["arn:aws:logs:*:*:*"]// ["*"]
+    resources = ["arn:aws:logs:*:*:*"]
   }
 }
 
