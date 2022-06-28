@@ -19,7 +19,7 @@ export const handler = async(event: any, context: any): Promise<any> => {
       })
     };
   } catch (error: any) {
-    logger.info(error);
+    logger.error(error);
 
     return {
       status: error.status,
