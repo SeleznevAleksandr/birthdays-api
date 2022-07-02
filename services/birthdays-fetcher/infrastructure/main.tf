@@ -41,8 +41,8 @@ resource "aws_lambda_function" "birthdays-fetcher" {
 
   environment {
     variables = {
-      NOTION_API_KEY = aws_ssm_parameter.dynamic["NOTION_API_KEY"].value
-      NOTION_DATABASE_ID = aws_ssm_parameter.dynamic["NOTION_DATABASE_ID"].value
+      NOTION_API_KEY     = data.aws_ssm_parameter.notion_api_key.value
+      NOTION_DATABASE_ID = data.aws_ssm_parameter.notion_database_id.value
     }
   }
 }

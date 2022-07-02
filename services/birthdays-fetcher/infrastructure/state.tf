@@ -14,3 +14,15 @@ resource "aws_s3_bucket_versioning" "widget-tstate-storage-example" {
     status = "Enabled"
   }
 }
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "widget-state-encryption" {
+  bucket = aws_s3_bucket.widget-tstate-storage.bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "aws:kms"
+    }
+
+    bucket_key_enabled = true
+  }
+}
