@@ -14,3 +14,15 @@ jobs:
       run: yarn
     - name: Run ESLint
       run: npm run lint
+  birthdays-api-lint:
+    name: Code quality check on brithdays-api service
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/birthdays-api
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install modules
+      run: yarn
+    - name: Run ESLint
+      run: npm run lint
