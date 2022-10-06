@@ -1,8 +1,5 @@
-import dotenv from 'dotenv';
 import { Client } from '@notionhq/client';
 import { pino } from 'pino';
-
-dotenv.config();
 
 export type NotionDataType = {
   userName: string,
