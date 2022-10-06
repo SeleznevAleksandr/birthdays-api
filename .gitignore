@@ -10,3 +10,8 @@
 
 # Ignore esbuild artifacts
 **/index.zip
+
+# Ignore CDK artifacts
+**/cdk.out
+
+*.d.ts
