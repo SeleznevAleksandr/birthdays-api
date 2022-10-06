@@ -33,11 +33,11 @@ resource "aws_dynamodb_table" "birthdays-table" {
 resource "aws_lambda_function" "birthdays-fetcher" {
   function_name    = "birthdays-fetcher-lambda"
   role             = aws_iam_role.lambda-role.arn
-  filename         = ".${path.module}/index.zip"
+  filename         = "index.zip"
   handler          = "index.handler"
   runtime          = "nodejs14.x"
   timeout          = 60
-  source_code_hash = filebase64sha256(".${path.module}/index.zip")
+  source_code_hash = filebase64sha256("index.zip")
 
   environment {
     variables = {
@@ -106,10 +106,9 @@ resource "aws_iam_role_policy_attachment" "test-attach" {
   policy_arn = aws_iam_policy.additional-policy.arn
 }
 
-
 resource "aws_cloudwatch_event_rule" "lambda-invocation" {
-  name        = "capture-aws-sign-in"
-  description = "Capture each AWS Console Sign In"
+  name        = "capture-notion-data"
+  description = "Capture Notion data once a day"
 
   schedule_expression = "rate(1 day)"
 }
